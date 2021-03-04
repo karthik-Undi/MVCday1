@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>viewexample</title>
+</head>
+<body>
+    <div>
+        <h1>in view</h1>
+        Student Name: @ViewData["studentname"]
+        @foreach (var num in (IEnumerable<int>)(ViewData["numbers"]))
+        {
+            <p>
+                @num
+            </p>
+        }
+        ==================================
+        @foreach (var num in ViewBag.lol)
+        {
+            <p>
+                @num
+            </p>
+        }
+
+    </div>
+</body>
+</html>
+
