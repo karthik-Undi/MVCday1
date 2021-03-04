@@ -23,11 +23,19 @@ namespace Mar4MVC.Controllers
             return View();
         }
         [HttpPost]
-        public String Register(LoginDetails g)
+        public ActionResult Register(LoginDetails g)
         {
             dbcontext.LoginDetails.Add(g);
-            dbcontext.SaveChanges();
-            return g.UserName;
+            try
+            {
+                dbcontext.SaveChanges();
+                ViewBag.succ = true;
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException)
+            {
+                ViewBag.flag = true;
+            }
+            return View();
         }
 
 
@@ -37,16 +45,21 @@ namespace Mar4MVC.Controllers
             return View();
         }
         [HttpPost]
-        public String UpdatePsss(LoginDetails loginDetails)
+        public ActionResult UpdatePsss(LoginDetails loginDetails)
         {
-            
-            LoginDetails ld = dbcontext.LoginDetails.Single(log => log.UserName == loginDetails.UserName);
-            LoginDetails newlog = new LoginDetails(loginDetails.UserName, loginDetails.Password, loginDetails.Role);
-            dbcontext.LoginDetails.Remove(ld);
-            //dbcontext.Sql
-            dbcontext.LoginDetails.Add(newlog);
+            try
+            {
+LoginDetails ld = dbcontext.LoginDetails.FirstOrDefault(log => log.UserName == loginDetails.UserName);
+            ld.Password = loginDetails.Password;
             dbcontext.SaveChanges();
-            return "Your old Password is "+ld.Password+" and new password is "+newlog.Password;
+                ViewBag.succ = true;
+            }
+            catch
+            {
+                ViewBag.flag = true;
+            }
+            
+            return View();
 
         }
 
@@ -56,12 +69,43 @@ namespace Mar4MVC.Controllers
         }
 
         [HttpPost]
-        public String DeleteUser(LoginDetails l)
+        public ActionResult DeleteUser(LoginDetails l)
         {
-            LoginDetails ld = dbcontext.LoginDetails.Single(log => log.UserName == l.UserName);
-            dbcontext.LoginDetails.Remove(ld);
+            LoginDetails ld = l;
+            try
+            {
+                ld = dbcontext.LoginDetails.Single(log => log.UserName == l.UserName);
+                dbcontext.LoginDetails.Remove(ld);
             dbcontext.SaveChanges();
-            return "User Deleted : "+ld.UserName+"\nUser Role: "+ld.Role;
+            ViewBag.Name = ld.UserName;
+            ViewBag.Role = ld.Role;
+                ViewBag.succ = true;
+
+            }
+            catch(System.InvalidOperationException)
+            {
+                ViewBag.flag = true;
+            }
+            
+            
+            return View();
+            //return "User Deleted : "++"\nUser Role: "+ld.Role;
         }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(LoginDetails l)
+        {
+            LoginDetails ld = dbcontext.LoginDetails.Single(log => (log.UserName == l.UserName)&&(log.Password==l.Password));
+
+
+            return RedirectToAction("Index", l);
+        }
+
+
+
     }
 }

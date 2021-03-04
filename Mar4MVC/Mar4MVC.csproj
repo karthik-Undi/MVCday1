@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -118,6 +119,9 @@
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\User\UpdatePsss.cshtml" />
     <Content Include="Views\User\DeleteUser.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Login\Loginpage.cshtml" />
+    <Content Include="Views\Login\updaterole.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

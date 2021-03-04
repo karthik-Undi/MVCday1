@@ -12,6 +12,7 @@ namespace Mar4MVC.Models
         public String Name { get; set; }
         public String UserName { get; set; }
 
+
         [ForeignKey("UserName")]
 
         public LoginDetails Login { get; set; }
